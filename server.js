@@ -9,6 +9,12 @@ app.get('/test/gamespot', (req, res) => {
       data: response.data,
     })
   }).catch(error => {
+    const headers = error.response.headers
+    const contentType = headers['content-type'] || ''
+    if (contentType.includes('text/html')) {
+      res.send(error.response.data)
+      return
+    } 
     res.json({
       status: error.response.status,
       error: error.response.data,
